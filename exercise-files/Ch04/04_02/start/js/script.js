@@ -68,17 +68,31 @@
 		//const $into = $('.conditions')[0]; // selecting the DOM element where the React component that follows will be rendered
 		const into = document.querySelector('.conditions');
 		// ReactDOM.render(<Forecast {...state} />, $into);
-		ReactDOM.render(<Forecast {...state} />, into);
+		// ReactDOM.render(<Forecast {...state} />, into);
 
-		function Forecast(props) {
-			return (
-				<div>
-					<p className="city">{props.city}</p>
-					<p>{props.degCInt}&#176; C / {props.degFInt}&#176; F <img src={props.icon} alt={props.condition} /></p>
-				</div>
-			)
-		}
+		// function Forecast(props) {
+		// 	return (
+		// 		<div>
+		// 			<p className="city">{props.city}</p>
+		// 			<p>{props.degCInt}&#176; C / {props.degFInt}&#176; F <img src={props.icon} alt={props.condition} /></p>
+		// 		</div>
+		// 	)
+		// }
 
+		// start with js statements to create elements - need to create 4 elements
+
+		let container = document.createElement('div'); // container for weather data
+		let cityPara = document.createElement('p'); // p for city info data
+		cityPara.setAttribute('class', 'city'); // sets value of class attr to string city
+		// .innerHTML has security risks bc it exposes html elements so avoid it
+		// .textContent is safer, it doesnt parse anyt html in the values
+		cityPara.textContent = state.city;
+		let conditionsPara = document.createElement('p'); // p for weather conditions data
+		conditionsPara.textContent = state.degCInt + '\u00B0 C / ' + state.degFInt + '\u00B0 F /';// degCInt = celsius temp value and degFInt = farenheit temp value
+		// use unicode versions of html codes for &#176; when using vanilla js
+		let iconImage = document.createElement('img'); // image element for weather icon
+		iconImage.setAttribute('src', state.icon); // param that is storing the alt text value
+		iconImage.setAttribute('alt', state.condition); // brief descr. of  the weather
 		updateActivityList();
 	}
 
@@ -140,24 +154,33 @@
 		const into = document.querySelector('.activities');
 
 		// ReactDOM.render(<Activities {...state} />, $into);
-		ReactDOM.render(<Activities {...state} />, into);
+		// ReactDOM.render(<Activities {...state} />, into);
 
-		function Activities(props) {
-			const activitiesList = props.activities.map(function(activity, index) {
-				return <li key={index}>{activity}</li>
-			});
-			return (
-				<div>
-					<ul>{activitiesList}</ul>
-				</div>
-			)
-		}
+		// function Activities(props) {
+		// 	const activitiesList = props.activities.map(function(activity, index) {
+		// 		return <li key={index}>{activity}</li>
+		// 	});
+		// 	return (
+		// 		<div>
+		// 			<ul>{activitiesList}</ul>
+		// 		</div>
+		// 	)
+		// }
 
+		let activitiesContainer = document.createElement('div');
+		let list = document.createElement('ul');
+		// need to build out li items for all the elements in the state.activities array
+		state.activities.forEach(function(activity, index) { // activity is the text of the li array item and index is the value of the index # for array element
+			let listItem = document.createElement('li');
+			listItem.textContent = activity;
+			listItem.setAttribute('key', index);
+		});
 		$('.results').slideDown(300);
 	}
 
 	// handle ajax failure
 	function updateUIFailure() {
-		$(".conditions").text("Weather information unavailable");
+		// $(".conditions").text("Weather information unavailable");
+		document.querySelector('.conditions').textContent = "Weather information unavailable";
 	}
 })();
