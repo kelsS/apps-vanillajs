@@ -1,0 +1,15 @@
+# Dependency directories
+node_modules
+bower_components
+
+# Compiled
+# dist
+# dist/**/*
+
+.DS_Store
+.sass-cache
+.publish
+Desktop.ini
+npm-debug.log
+**/generated/_icons.sass
+.editorconfig
