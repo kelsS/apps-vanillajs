@@ -88,11 +88,28 @@
 		// .textContent is safer, it doesnt parse anyt html in the values
 		cityPara.textContent = state.city;
 		let conditionsPara = document.createElement('p'); // p for weather conditions data
-		conditionsPara.textContent = state.degCInt + '\u00B0 C / ' + state.degFInt + '\u00B0 F /';// degCInt = celsius temp value and degFInt = farenheit temp value
+		//conditionsPara.textContent = state.degCInt + '\u00B0 C / ' + state.degFInt + '\u00B0 F /';// degCInt = celsius temp value and degFInt = farenheit temp value
+		// written as Template Literal - `` indiates template literal in js - the back tick
+		conditionsPara.textContent = `${state.degCInt}\u00B0 C / ${state.degFInt}\u00B0 F`; // for degrees symbol
 		// use unicode versions of html codes for &#176; when using vanilla js
 		let iconImage = document.createElement('img'); // image element for weather icon
 		iconImage.setAttribute('src', state.icon); // param that is storing the alt text value
 		iconImage.setAttribute('alt', state.condition); // brief descr. of  the weather
+		conditionsPara.appendChild(iconImage); // appends image as a child to the paragraph
+		// order for appendChild is important in the code, append the child you want to show up first, first in the code
+		container.appendChild(cityPara); // append paragraphs as children of container div
+		container.appendChild(conditionsPara);
+
+		// To incorporate the elements we need to append the container element to a specific element in the DOM
+		
+		// when page is first loaded there is no additonal content and we simply append the container to .conditions div
+		// But if we are changing from an exisitng view to a new view if a user enters a new city and does a new search then we want to replace the existing content
+			if (document.querySelector('.conditions div')) { //  this is true if that element exists
+			// if it does exist then there is existing content that needs to be replaced
+			into.replaceChild(container, document.querySelector('.conditions div')); // takes 2 args - new content and DOM element to be replaced
+			} else {
+				into.appendChild(container);
+			}
 		updateActivityList();
 	}
 
@@ -174,7 +191,16 @@
 			let listItem = document.createElement('li');
 			listItem.textContent = activity;
 			listItem.setAttribute('key', index);
+			list.appendChild(listItem); // builds out list using loop
 		});
+
+		activitiesContainer.appendChild(list); // nests ul within the div
+		if (document.querySelector('.activities div')) { //  this is true if that element exists
+			// if it does exist then there is existing content that needs to be replaced
+			into.replaceChild(activitiesContainer, document.querySelector('.activities div')); // takes 2 args - new content and DOM element to be replaced
+			} else {
+				into.appendChild(activitiesContainer);
+			}
 		$('.results').slideDown(300);
 	}
 
